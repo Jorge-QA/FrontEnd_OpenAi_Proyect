@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./estilos/estilos.css">
+    <!-- para decodificar el token -->
+    <!-- <script src="../node_modules/jwt-decode/build/jwt-decode.js"></script> -->
+    <script src="../server/node_modules/jwt-decode/build/jwt-decode.js"></script>
+</head>
+
+<body>
+
+    <body>
+        <div class="container">
+            <h1>Inicio de Sesión</h1>
+            <form id=loginForm>
+                <label for="correo2">Correo Electrónico:</label>
+                <input type="email" id="correo2" name="correo2" required>
+
+                <label for="contrasennia2">Contraseña:</label>
+                <input type="password" id="contrasennia2" name="contrasennia2" required>
+
+                <button type="submit">Iniciar Sesión</button>
+                <br>
+                <a href="register.html">No estás registrado?</a>
+            </form>
+        </div>
+
+        <script>
+            //proceso para el login
+            document
+                .getElementById("loginForm")
+                .addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    const correo = document.getElementById("correo2").value;
+                    const password = document.getElementById("contrasennia2").value;
+                    const userData = {
+                        email: correo,
+                        password: password
+                    };
+                    const ajaxRequest = new XMLHttpRequest();
+                    ajaxRequest.addEventListener("load", completedPostL);
+                    ajaxRequest.addEventListener("error", errorPostL);
+                    ajaxRequest.open("POST", "http://localhost:3001/api/session/login");
+                    ajaxRequest.setRequestHeader("Content-Type", "application/json");
+                    ajaxRequest.send(JSON.stringify(userData));
+                });
+
+            function completedPostL(event) {
+                const response = JSON.parse(event.target.responseText);
+                if (response.error) {
+                    alert(response.mensaje); // Aquí se muestra el mensaje de error del servidor
+                } else {
+                    // Verificar el rol del usuario
+                    const token = response.data.token;
+                    const decodedToken = jwt_decode(token);
+                    const userRole = decodedToken.rol;
+                    const state = decodedToken.state;
+                    //guardamos el token, nombre y id de usuario en session storage
+                    sessionStorage.setItem("token", token);
+                    sessionStorage.setItem("name", decodedToken.name);
+                    sessionStorage.setItem("id", decodedToken.id);
+                    sessionStorage.setItem("state", state);
+
+                    // Redireccionar según el rol del usuario
+                    if (userRole === "admin") {
+                        document.getElementById("loginForm").reset();
+                        window.location.href = "admin.html";
+                    } else if (userRole === "client") {
+                        if (state === "activo") {
+                            document.getElementById("loginForm").reset();
+                            window.location.href = "client.html";
+                        } else {
+                            alert("Usuario inactivo, solicite permisos de ingreso al administrador");
+                        }
+                    } else {
+                        alert("Rol desconocido, verifique el usuario");
+                    }
+                }
+            }
+
+            function errorPostL() {
+                alert("Hubo un error al procesar la solicitud. Por favor, inténtalo nuevamente.");
+            }
+            //evita que el usuario retroceda o avance con el navegador entre páginas
+            history.pushState(null, null, location.href);
+            window.onpopstate = function () {
+                history.go(1);
+            };
+        </script>
+    </body>
+
+</html>
