@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CRUD Prompts</title>
     <link rel="stylesheet" href="./estilos/crud.css" />
-    <!-- para decodificar el token -->
-    <!-- <script src="../node_modules/jwt-decode/build/jwt-decode.js"></script> -->
   </head>
 
   <body>
@@ -86,7 +84,7 @@
             <th>Input</th>
             <th>Etiquetas</th>
             <th>Tipo</th>
-            <th>Editar/Eliminar/Ejecutar</th>
+            <th>Editar/Eliminar/Ejecutar/Ver</th>
           </tr>
         </thead>
         <tbody>
@@ -104,7 +102,7 @@
             <th>Cantidad</th>
             <th>Tamaño</th>
             <th>Tipo</th>
-            <th>Editar/Eliminar/Ejecutar</th>
+            <th>Editar/Eliminar/Ejecutar/Ver</th>
           </tr>
         </thead>
         <tbody>
@@ -160,7 +158,7 @@
           const name = document.getElementById("nombre").value;
           const descripcion = document.getElementById("descripcion").value;
           const tipo = document.getElementById("tipo").value;
-          var cantidad = "1"; // se queman por si se cambia el tipo de prompt que tengan valores válidos
+          var cantidad = "1"; // se queman por si se cambia el tipo de prompt que tengan valores válidos y no manejarlos como null o undefined
           var tamanno = "256x256";
           if (tipo === "image") {
             cantidad = document.getElementById("cantidadImagenes").value;
@@ -191,7 +189,7 @@
             tagsList.push(tag4);
           }
 
-          // valida si se eligieron los valores de tamaño y size para insertarlos al objeto
+          // Construcción de prompt
           const promptData = {
             name: name,
             type: tipo,
@@ -201,7 +199,7 @@
             input: descripcion,
             user: sessionStorage.getItem("id"),
           };
-
+          // Lamada al api para guardar prompt
           const ajaxRequest = new XMLHttpRequest();
           ajaxRequest.addEventListener("load", completedPost);
           ajaxRequest.addEventListener("error", errorPost);
@@ -233,7 +231,7 @@
         );
       }
 
-      //Obtenemos todos los prompts para editarlos o eliminarlos
+      //Obtenemos todos los prompts para mostrarlos / editarlos o eliminarlos
       function getPrompts() {
         const ajaxRequest = new XMLHttpRequest();
         ajaxRequest.addEventListener("load", completedG);
@@ -260,8 +258,6 @@
 
         const tableBody2 = document.querySelector("#promptsTable2 tbody");
         tableBody2.innerHTML = "";
-        // const selectCurso = document.querySelector("#selectCurso");
-        // selectCurso.innerHTML = "";
 
         prompts.forEach((prompt) => {
           if (prompt.type != "image") {
@@ -306,14 +302,13 @@
             typeSelect.appendChild(completion);
 
             typeSelect.value = prompt.type;
-            //deshabilito por que al modificar los tipo image no se podría seleccionar cantidad y tamaño
-            //typeSelect.disabled = true;
+
             typeCell.appendChild(typeSelect);
             row.appendChild(typeCell);
 
             const editDeleteCell = document.createElement("td");
             const editButton = document.createElement("button");
-            editButton.textContent = "Editar";
+            editButton.textContent = "Update";
             editButton.className = "editar-btn";
             editButton.addEventListener("click", () => {
               // funcion editar:
@@ -404,8 +399,7 @@
             }
 
             nSelect.value = prompt.n;
-            //deshabilito por que al modificar los tipo image no se podría seleccionar cantidad y tamaño
-            //nSelect.disabled = true;
+
             nCell.appendChild(nSelect);
             row.appendChild(nCell);
 
@@ -426,8 +420,7 @@
             sizeSelect.appendChild(large);
 
             sizeSelect.value = prompt.size;
-            //deshabilito por que al modificar los tipo image no se podría seleccionar cantidad y tamaño
-            //sizeSelect.disabled = true;
+
             sizeCell.appendChild(sizeSelect);
             row.appendChild(sizeCell);
 
@@ -447,14 +440,13 @@
             typeSelect.appendChild(completion);
 
             typeSelect.value = prompt.type;
-            //deshabilito por que al modificar los tipo image no se podría seleccionar cantidad y tamaño
-            //typeSelect.disabled = true;
+
             typeCell.appendChild(typeSelect);
             row.appendChild(typeCell);
 
             const editDeleteCell = document.createElement("td");
             const editButton = document.createElement("button");
-            editButton.textContent = "Editar";
+            editButton.textContent = "Update";
             editButton.className = "editar-btn";
             editButton.addEventListener("click", () => {
               // funcion editar: promptId, name, input, tags,n, size, type
@@ -621,7 +613,7 @@
         }
       }
 
-      // Cierra el modal al hacer clic fuera de él
+      // Cierra el modal al hacer click fuera de él
       window.addEventListener("click", function (event) {
         var modal = document.getElementById("myModal");
         if (event.target == modal) {
@@ -704,7 +696,6 @@
         } else {
           // En caso de que no haya respuestas en "choices"
           alert("No se encontró ninguna respuesta.");
-          console.log("No se encontró ninguna respuesta.");
         }
       }
 
@@ -757,7 +748,6 @@
         } else {
           // En caso de que no haya imágenes en "data"
           alert("No se encontraron imágenes generadas.");
-          console.log("No se encontraron imágenes generadas.");
         }
       }
 

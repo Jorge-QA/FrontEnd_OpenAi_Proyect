@@ -6,9 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CRUD Usuarios</title>
   <link rel="stylesheet" href="./estilos/crud.css" />
-  <!-- para decodificar el token -->
-  <!-- <script src="../node_modules/jwt-decode/build/jwt-decode.js"></script> -->
-  <script src="../server/node_modules/jwt-decode/build/jwt-decode.js"></script>
 </head>
 
 <body>
@@ -106,7 +103,7 @@
 
         const editDeleteCell = document.createElement("td");
         const editButton = document.createElement("button");
-        editButton.textContent = "Editar";
+        editButton.textContent = "Update";
         editButton.className = "editar-btn";
         editButton.addEventListener("click", () => {
           // funcion editar:
@@ -175,7 +172,7 @@
       console.error("Error al editar el Usuario");
     }
 
-    //eliminar curso:
+    //eliminar usuario:
     function deleteUser(userId) {
       const ajaxRequest = new XMLHttpRequest();
       ajaxRequest.addEventListener("load", deletionCompleted);
