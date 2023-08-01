@@ -38,7 +38,7 @@
       <input type="checkbox" id="2fa" name="2fa" /><br />
 
       <input
-      id="actualizar"
+        id="actualizar"
         type="submit"
         value="Actualizar datos"
         style="
@@ -52,11 +52,11 @@
 
     <script>
       document.getElementById("actualizar").addEventListener("click", () => {
-        var tfa= null;
-        if(document.getElementById("2fa").checked == true){
-            tfa = true;
-        }else{
-            tfa = false
+        var tfa = null;
+        if (document.getElementById("2fa").checked == true) {
+          tfa = true;
+        } else {
+          tfa = false;
         }
         // funcion editar:
         editUser(
@@ -66,10 +66,10 @@
           document.getElementById("correo").value,
           document.getElementById("telefono").value,
           document.getElementById("contrasena").value,
-          tfa,
+          tfa
         );
       });
-      
+
       function volver() {
         window.location.href = "client.html";
       }
@@ -100,6 +100,8 @@
 
         if (user.tfa === true) {
           document.getElementById("2fa").checked = true;
+        }else{
+          document.getElementById("2fa").checked = false;
         }
 
         console.log(user);
