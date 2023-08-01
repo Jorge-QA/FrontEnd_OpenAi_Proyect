@@ -13,6 +13,7 @@ body {
   background-color: #039188;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size:large;
 }
 
 .BTN {
@@ -106,10 +107,34 @@ tr:hover {
   border: none;
   border-radius: 4px;
   color: #000000;
+  font-weight: bolder;
 }
 
 .btn-cerrar {
-  background-color: #5f6d03;
+  background-color: #8da205;
+}
+
+.btn-datos {
+  background-color: #66e268;
+  width: 100px;
+  margin: 20px;
+  border-radius: 5px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-weight: bolder;
+}
+.btn-volver {
+  background-color: #66e268;
+  width: 100px;
+  margin: 30px;
+  border-radius: 5px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  font-size: medium;
+  font-weight: bolder;
 }
 
 .editar-btn {

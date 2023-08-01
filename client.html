@@ -13,6 +13,11 @@
         Cerrar sesión
       </button>
     </div>
+    <div class="BTN">
+      <button onclick="modificarDatos()" class="btn-datos" id="datos">
+        Modificar mis datos
+      </button>
+    </div>
     <form class="promptForm" id="promptForm">
       <h2>Creación de Prompt</h2>
 
@@ -125,6 +130,9 @@
       function cerrarSesion() {
         sessionStorage.clear();
         window.location.href = "index.html";
+      }
+      function modificarDatos() {
+        window.location.href = "datos.html";
       }
       const usuario = sessionStorage.getItem("name");
       const element = document.getElementById("user");

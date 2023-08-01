@@ -25,6 +25,7 @@
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Correo</th>
+          <th>Celular</th>
           <th>Estado</th>
           <th>Editar/Eliminar</th>
         </tr>
@@ -35,7 +36,7 @@
     </table>
   </div>
   <script>
-    //Obtenemos todos los cursos para editarlos o eliminarlos
+    //Obtenemos todos los usuarios para editarlos o eliminarlos
     function getUsers() {
       const ajaxRequest = new XMLHttpRequest();
       ajaxRequest.addEventListener("load", completedG);
@@ -86,6 +87,14 @@
         emailCell.appendChild(emailInput);
         row.appendChild(emailCell);
 
+        const phoneCell = document.createElement("td");
+        const phoneInput = document.createElement("input");
+        phoneInput.type = "number";
+        phoneInput.value = user.phone;
+        phoneInput.className = "input";
+        phoneCell.appendChild(phoneInput);
+        row.appendChild(phoneCell);
+
         const stateCell = document.createElement("td");
         const stateSelect = document.createElement("select");
         const activo = document.createElement("option");
@@ -112,6 +121,7 @@
             first_nameInput.value,
             last_nameInput.value,
             emailInput.value,
+            phoneInput.value,
             stateSelect.value
           );
         });
@@ -139,12 +149,13 @@
     getUsers();
 
     //editar usuario
-    function editUser(userId, first_name, last_name, email, state) {
+    function editUser(userId, first_name, last_name, email, phone, state) {
       // Crear un objeto con los datos actualizados
       const updatedUser = {
         first_name: first_name,
         last_name: last_name,
         email: email,
+        phone: phone,
         state: state,
       };
 

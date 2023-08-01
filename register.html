@@ -23,6 +23,9 @@
                 <label for="correo">Correo Electrónico:</label>
                 <input type="email" id="correo1" name="correo1" required>
 
+                <label for="correo">Celular:</label>
+                <input type="number" id="phone" name="phone" required>
+
                 <label for="contrasenia">Contraseña:</label>
                 <input type="password" id="contrasennia1" name="contrasenia1" required>
 
@@ -43,15 +46,18 @@
                     const name = document.getElementById("nombre").value;
                     const apellido = document.getElementById("apellido").value;
                     const correo = document.getElementById("correo1").value;
+                    const phone = document.getElementById("phone").value;
                     const password = document.getElementById("contrasennia1").value;
 
                     const userData = {
                         first_name: name,
                         last_name: apellido,
                         email: correo,
+                        phone: phone,
                         password: password,
                         rol: "client",
-                        state: "inactivo"
+                        state: "inactivo",
+                        tfa: true
                     };
 
                     const ajaxRequest = new XMLHttpRequest();

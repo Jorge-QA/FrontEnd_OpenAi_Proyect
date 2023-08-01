@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Datos de usuario</title>
+    <link rel="stylesheet" href="./estilos/crud.css" />
+  </head>
+  <body>
+    <div class="BTN">
+      <button
+        class="btn-volver"
+        onclick="volver()"
+        style="background-color: rgb(147, 148, 50)"
+      >
+        Volver
+      </button>
+    </div>
+
+    <form class="promptForm" style="width: 20rem">
+      <h1>Datos de Usuario</h1>
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" required /><br />
+
+      <label for="apellido">Apellido:</label>
+      <input type="text" id="apellido" name="apellido" required /><br />
+
+      <label for="correo">Correo:</label>
+      <input type="email" id="correo" name="correo" required /><br />
+
+      <label for="telefono">Teléfono:</label>
+      <input type="number" id="telefono" name="telefono" required /><br />
+
+      <label for="contrasena">Nueva contraseña:</label>
+      <input type="password" id="contrasena" name="contrasena" required /><br />
+
+      <label for="2fa">Habilitar 2FA:</label>
+      <input type="checkbox" id="2fa" name="2fa" /><br />
+
+      <input
+      id="actualizar"
+        type="submit"
+        value="Actualizar datos"
+        style="
+          margin: 2rem;
+          background: rgb(93, 252, 130);
+          padding: 1rem;
+          align-content: center;
+        "
+      />
+    </form>
+
+    <script>
+      document.getElementById("actualizar").addEventListener("click", () => {
+        var tfa= null;
+        if(document.getElementById("2fa").checked == true){
+            tfa = true;
+        }else{
+            tfa = false
+        }
+        // funcion editar:
+        editUser(
+          sessionStorage.getItem("id"),
+          document.getElementById("nombre").value,
+          document.getElementById("apellido").value,
+          document.getElementById("correo").value,
+          document.getElementById("telefono").value,
+          document.getElementById("contrasena").value,
+          tfa,
+        );
+      });
+      
+      function volver() {
+        window.location.href = "client.html";
+      }
+      function getUser() {
+        const ajaxRequest = new XMLHttpRequest();
+        ajaxRequest.addEventListener("load", completedG);
+        ajaxRequest.addEventListener("error", errorG);
+        const id = sessionStorage.getItem("id");
+        ajaxRequest.open(
+          "GET",
+          `http://localhost:3001/api/admin/users?id=${id}`
+        );
+        ajaxRequest.setRequestHeader(
+          "auth-token",
+          sessionStorage.getItem("token")
+        );
+        ajaxRequest.send();
+      }
+
+      function completedG(event) {
+        const response = event.target.responseText;
+        const user = JSON.parse(response);
+        document.getElementById("nombre").value = user.first_name;
+        document.getElementById("apellido").value = user.last_name;
+        document.getElementById("telefono").value = user.phone;
+        document.getElementById("correo").value = user.email;
+        //document.getElementById("contrasena").value = user.password;
+
+        if (user.tfa === true) {
+          document.getElementById("2fa").checked = true;
+        }
+
+        console.log(user);
+      }
+
+      function errorG() {
+        console.error("Error al cargar los usuarios");
+      }
+
+      getUser();
+
+      //editar usuario
+      function editUser(
+        userId,
+        first_name,
+        last_name,
+        email,
+        phone,
+        password,
+        tfa
+      ) {
+        // Crear un objeto con los datos actualizados
+        const updatedUser = {
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          phone: phone,
+          password: password,
+          tfa: tfa,
+        };
+
+        const ajaxRequest = new XMLHttpRequest();
+        ajaxRequest.addEventListener("load", editCompleted);
+        ajaxRequest.addEventListener("error", editError);
+        ajaxRequest.open(
+          "PATCH",
+          `http://localhost:3001/api/admin/users?id=${userId}`
+        );
+        ajaxRequest.setRequestHeader(
+          "auth-token",
+          sessionStorage.getItem("token")
+        );
+        ajaxRequest.setRequestHeader("Content-Type", "application/json");
+        ajaxRequest.send(JSON.stringify(updatedUser));
+      }
+
+      function editCompleted(event) {
+        alert("Usuario editado con éxito!");
+        getUser();
+      }
+
+      function editError() {
+        console.error("Error al editar el Usuario");
+      }
+    </script>
+  </body>
+</html>
