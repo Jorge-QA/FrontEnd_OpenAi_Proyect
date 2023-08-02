@@ -164,7 +164,7 @@
       ajaxRequest.addEventListener("error", editError);
       ajaxRequest.open(
         "PATCH",
-        `http://localhost:3001/api/admin/users?id=${userId}`
+        `http://localhost:3001/api/admin/users/admin?id=${userId}`
       );
       ajaxRequest.setRequestHeader(
         "auth-token",
