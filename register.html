@@ -56,7 +56,7 @@
                         phone: phone,
                         password: password,
                         rol: "client",
-                        state: "activo",
+                        state: "inactivo",
                         tfa: true
                     };
 
@@ -74,9 +74,11 @@
                     alert(response.mensaje); // Aquí se muestra el mensaje de error del servidor
                 } else {
                     // Registro exitoso, puedes redirigir o mostrar una alerta de éxito, etc.
-                    alert("Registro exitoso!");
+                    alert("Registro exitoso!\n\nRevise su correo para autenticarse y hacer uso del app!\n\nO solicite permisos al administrador");
                     document.getElementById("registerForm").reset();
                     window.location.href = "index.html";
+                    //guarda el id del usuario recien creado en session storage para envío de correo: 
+                    sessionStorage.setItem('id', response.data._id);
                 }
             }
 

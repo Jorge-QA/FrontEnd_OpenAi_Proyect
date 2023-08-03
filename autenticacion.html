@@ -10,5 +10,17 @@
     <p>Presiona el botón para finalizar con la autentificación de tu correo</p>
     <button class="button">Autenticarme</button>
   </div>
+
+<script>
+    // Obtener los parámetros del enlace actual
+const urlParams = new URLSearchParams(window.location.search);
+
+// Obtener el ID del usuario del parámetro "userId"
+const userId = urlParams.get("id");
+
+// Almacenar el ID del usuario en sessionStorage
+sessionStorage.setItem("id", userId);
+</script>
+
 </body>
 </html>
