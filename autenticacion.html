@@ -33,7 +33,7 @@ function autenticar() {
       ajaxRequest.addEventListener("error", editError);
       ajaxRequest.open(
         "PATCH",
-        `http://localhost:3001/api/admin/users/admin?id=${sessionStorage.getItem("id")}`
+        `http://localhost:3001/api/email/users/admin?id=${sessionStorage.getItem("id")}`
       );
       ajaxRequest.setRequestHeader(
         "auth-token",
