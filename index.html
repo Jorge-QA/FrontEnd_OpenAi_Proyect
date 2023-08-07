@@ -59,6 +59,7 @@
                     const userRole = decodedToken.rol;
                     const state = decodedToken.state;
                     const tfa = decodedToken.tfa;
+                    const code = decodedToken.code;
                     //guardamos el token, nombre y id de usuario en session storage
                     sessionStorage.setItem("token", token);
                     sessionStorage.setItem("name", decodedToken.name);
@@ -66,20 +67,63 @@
                     sessionStorage.setItem("state", state);
                     sessionStorage.setItem("tfa", tfa);
 
-                    // Redireccionar según el rol del usuario
-                    if (userRole === "admin") {
-                        document.getElementById("loginForm").reset();
-                        window.location.href = "admin.html";
-                    } else if (userRole === "client") {
-                        if (state === "activo") {
-                            document.getElementById("loginForm").reset();
-                            window.location.href = "client.html";
-                        } else {
-                            alert("Usuario inactivo, solicite permisos de ingreso al administrador");
+                    //validación si tiene activo 2fa:
+                    if (tfa && state === "activo") {
+                        if (validateNumberInput(code)) {
+
+                            // Redireccionar según el rol del usuario
+                            if (userRole === "admin") {
+                                document.getElementById("loginForm").reset();
+                                window.location.href = "admin.html";
+                            } else if (userRole === "client") {
+                                if (state === "activo") {
+                                    document.getElementById("loginForm").reset();
+                                    window.location.href = "client.html";
+                                } else {
+                                    alert("Usuario inactivo, solicite permisos de ingreso al administrador");
+                                }
+                            } else {
+                                alert("Rol desconocido, verifique el usuario");
+                            }
                         }
+
                     } else {
-                        alert("Rol desconocido, verifique el usuario");
+                        // Redireccionar según el rol del usuario
+                        if (userRole === "admin") {
+                            document.getElementById("loginForm").reset();
+                            window.location.href = "admin.html";
+                        } else if (userRole === "client") {
+                            if (state === "activo") {
+                                document.getElementById("loginForm").reset();
+                                window.location.href = "client.html";
+                            } else {
+                                alert("Usuario inactivo, solicite permisos de ingreso al administrador");
+                            }
+                        } else {
+                            alert("Rol desconocido, verifique el usuario");
+                        }
+
                     }
+
+                    // if (validateNumberInput(code)) {
+
+                    //     // Redireccionar según el rol del usuario
+                    //     if (userRole === "admin") {
+                    //         document.getElementById("loginForm").reset();
+                    //         window.location.href = "admin.html";
+                    //     } else if (userRole === "client") {
+                    //         if (state === "activo") {
+                    //             document.getElementById("loginForm").reset();
+                    //             window.location.href = "client.html";
+                    //         } else {
+                    //             alert("Usuario inactivo, solicite permisos de ingreso al administrador");
+                    //         }
+                    //     } else {
+                    //         alert("Rol desconocido, verifique el usuario");
+                    //     }
+                    // } else { alert("Código inválido") }
+
+
                 }
             }
 
@@ -91,6 +135,30 @@
             window.onpopstate = function () {
                 history.go(1);
             };
+
+
+            function validateNumberInput(code) {
+                let userInput;
+                let isValid = false;
+
+                while (!isValid) {
+                    userInput = prompt("Ingresa el código de verificación: ");
+
+                    if (userInput === null) {
+                        // El usuario presionó "Cancelar"
+                        break;
+                    }
+
+                    if (userInput === code) {
+                        isValid = true;
+                        console.log(`Has ingresado: ${userInput}`);
+                        alert("Código aceptado...")
+                        return isValid;
+                    } else {
+                        alert("Código inválida. Por favor, ingresa un código válido.");
+                    }
+                }
+            }
         </script>
     </body>
 
