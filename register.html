@@ -63,7 +63,7 @@
                     const ajaxRequest = new XMLHttpRequest();
                     ajaxRequest.addEventListener("load", completedPost);
                     ajaxRequest.addEventListener("error", errorPost);
-                    ajaxRequest.open("POST", "http://localhost:3001/api/session/register");
+                    ajaxRequest.open("POST", "http://localhost:3001/api/email/register");
                     ajaxRequest.setRequestHeader("Content-Type", "application/json");
                     ajaxRequest.send(JSON.stringify(userData));
                 });
