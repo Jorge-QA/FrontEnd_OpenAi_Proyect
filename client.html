@@ -81,7 +81,10 @@
     <br />
 
     <div class="table-container">
-      <h1 id="user"></h1>
+      <h1 id="user"></h1> 
+        <button onclick="buscarPrompt()" id="filtro" style="padding: 0.5rem; background-color: aqua;">
+          Busqueda por filtro
+        </button>
       <table id="promptsTable1">
         <thead>
           <tr>
@@ -133,6 +136,10 @@
       }
       function modificarDatos() {
         window.location.href = "datos.html";
+      }
+
+      function buscarPrompt() {
+        window.location.href = "clientSearch.html";
       }
       const usuario = sessionStorage.getItem("name");
       const element = document.getElementById("user");

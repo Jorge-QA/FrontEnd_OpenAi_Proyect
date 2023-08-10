@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Prompt</title>
+    <link rel="stylesheet" href="./estilos/crud.css" />
+</head>
+
+<body>
+
+    <button onclick="volver()" id="volver" style="padding: 1rem; margin: 1rem; background-color: rgb(225, 240, 89);">
+        Regresar
+    </button>
+    <div class="table-container">
+        <br>
+        <br>
+        <label for="tipo" style="font-size: xx-large">Busqueda por:</label>
+        <select id="tipo" required style="font-size: larger; margin-left: 1rem;">
+            <option value="Nombre">Nombre</option>
+            <option value="Etiqueta">Etiqueta</option>
+        </select>
+        <label for="parametro" style="font-size: x-large; margin-left: 1rem;">Ingrese el criterio de búsqueda:</label>
+        <input id="parametro" type="text" style="margin-left: 1rem;font-size: larger; width:8rem;" required>
+        <button onclick="searchPrompt()" id="buscar" style="padding: 0.5rem; margin: 0.5rem; background-color: rgb(89, 240, 109);">
+            Buscar
+        </button>
+
+        <table id="promptsTable1">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Input</th>
+                    <th>Etiquetas</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se agregarán las filas con información de los prompts -->
+            </tbody>
+            <br />
+            <br />
+        </table>
+    </div>
+
+    <script>
+        function volver() {
+            window.location.href = "client.html";
+        }
+
+        function searchPrompt() {
+            const tipo = document.getElementById("tipo").value
+            const parametro = document.getElementById("parametro").value
+            console.log(tipo, parametro);
+
+        }
+
+    </script>
+</body>
+
+</html>
