@@ -23,7 +23,8 @@
         </select>
         <label for="parametro" style="font-size: x-large; margin-left: 1rem;">Ingrese el criterio de búsqueda:</label>
         <input id="parametro" type="text" style="margin-left: 1rem;font-size: larger; width:8rem;" required>
-        <button onclick="searchPrompt()" id="buscar" style="padding: 0.5rem; margin: 0.5rem; background-color: rgb(89, 240, 109);">
+        <button onclick="searchPrompt()" id="buscar"
+            style="padding: 0.5rem; margin: 0.5rem; background-color: rgb(89, 240, 109);">
             Buscar
         </button>
 
@@ -52,8 +53,109 @@
         function searchPrompt() {
             const tipo = document.getElementById("tipo").value
             const parametro = document.getElementById("parametro").value
-            console.log(tipo, parametro);
+            // console.log(tipo, parametro);
+            getPrompts();
 
+        }
+
+        // Consulta GraphQL que deseas ejecutar
+        const query = `
+        {
+            prompts{
+    		    name
+                input
+                tags
+                type
+            }  
+        }
+        `;
+
+        // const query2 = `
+        // {
+        //     promptsByName{
+        // 	    name
+        //         input
+        //         tags
+        //         type
+        //     }  
+        // }
+        // `;
+
+        // const query3 = `
+        // {
+        //     promptsByTags{
+        // 	    name
+        //         input
+        //         tags
+        //         type
+        //     }  
+        // }
+        // `;
+
+        // Configurar la URL del servidor GraphQL
+        const graphqlUrl = "http://localhost:3001/graphql";
+
+        // Realizar la solicitud POST a la ruta "/graphql" con la consulta en el cuerpo
+        function getPrompts() {
+            fetch(graphqlUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({ query }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    // Manejar la respuesta de GraphQL aquí
+                    const promptsList = data.data.prompts;
+
+                    const tableBody1 = document.querySelector("#promptsTable1 tbody");
+                    tableBody1.innerHTML = "";
+
+                    promptsList.forEach(prompt => {
+                        const row = document.createElement("tr");
+
+                        const nameCell = document.createElement("td");
+                        const nameInput = document.createElement("input");
+                        nameInput.type = "text";
+                        nameInput.value = prompt.name;
+                        nameInput.className = "input";
+                        nameCell.appendChild(nameInput);
+                        row.appendChild(nameCell);
+
+                        const input_Cell = document.createElement("td");
+                        const inputInput = document.createElement("textarea");
+                        inputInput.value = prompt.input;
+                        inputInput.className = "input";
+                        input_Cell.appendChild(inputInput);
+                        row.appendChild(input_Cell);
+
+                        const tagsCell = document.createElement("td");
+                        const tagsInput = document.createElement("input");
+                        tagsInput.type = "text";
+                        tagsInput.value = prompt.tags;
+                        tagsInput.className = "input";
+                        tagsCell.appendChild(tagsInput);
+                        row.appendChild(tagsCell);
+
+                        const typeCell = document.createElement("td");
+                        const typeInput = document.createElement("input");
+                        typeInput.type = "text";
+                        typeInput.value = prompt.type;
+                        typeInput.className = "input";
+                        typeCell.appendChild(typeInput);
+                        row.appendChild(typeCell);
+
+                        tableBody1.appendChild(row);
+                    });
+
+                    //console.log(data.data.prompts);
+                })
+                .catch((error) => {
+                    // Manejar errores aquí
+                    console.error("Error al consumir GraphQL:", error);
+                });
         }
 
     </script>
