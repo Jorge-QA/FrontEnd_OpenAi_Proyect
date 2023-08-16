@@ -51,52 +51,64 @@
         }
 
         function searchPrompt() {
-            const tipo = document.getElementById("tipo").value
-            const parametro = document.getElementById("parametro").value
-            // console.log(tipo, parametro);
-            getPrompts();
+            const tipo = document.getElementById("tipo").value;
+            const parametro = document.getElementById("parametro").value;
+            const user = sessionStorage.getItem("id");
 
+            if (parametro) {
+                query = queryType(tipo, parametro, user)
+                getPrompts(query, tipo);
+            } else {
+                alert("Favor ingresar un criterio de búsqueda")
+            }
         }
 
-        // Consulta GraphQL que deseas ejecutar
-        const query = `
+        //               Consulta GraphQL que deseas ejecutar
+        // const query = `
+        // {
+        //     prompts{
+        //         name
+        //         input
+        //         tags
+        //         type
+        //     }  
+        // }
+        // `;
+
+        function queryType(type, criterio, user) {
+            var query = ``;
+            if (type === "Nombre") {
+                query = `
         {
-            prompts{
-    		    name
+            ByName(user: "${user}" , name: "${criterio}"){
+                name
                 input
                 tags
                 type
             }  
         }
         `;
-
-        // const query2 = `
-        // {
-        //     promptsByName{
-        // 	    name
-        //         input
-        //         tags
-        //         type
-        //     }  
-        // }
-        // `;
-
-        // const query3 = `
-        // {
-        //     promptsByTags{
-        // 	    name
-        //         input
-        //         tags
-        //         type
-        //     }  
-        // }
-        // `;
+                return query
+            } else if (type === "Etiqueta") {
+                query = `
+        {
+            ByTags(user: "${user}" , tags: "${criterio}"){
+                name
+                input
+                tags
+                type
+            }  
+        }
+        `;
+                return query
+            }
+        }
 
         // Configurar la URL del servidor GraphQL
         const graphqlUrl = "http://localhost:3001/graphql";
 
         // Realizar la solicitud POST a la ruta "/graphql" con la consulta en el cuerpo
-        function getPrompts() {
+        function getPrompts(query, by) {
             fetch(graphqlUrl, {
                 method: "POST",
                 headers: {
@@ -108,7 +120,13 @@
                 .then((response) => response.json())
                 .then((data) => {
                     // Manejar la respuesta de GraphQL aquí
-                    const promptsList = data.data.prompts;
+                    var promptsList = "";
+                    if (by === "Nombre") {
+                        promptsList = data.data.ByName; // acá cambio ByName, ByTags, prompts
+                    } else if (by === "Etiqueta") {
+                        promptsList = data.data.ByTags;
+                    }
+
 
                     const tableBody1 = document.querySelector("#promptsTable1 tbody");
                     tableBody1.innerHTML = "";
@@ -154,7 +172,7 @@
                 })
                 .catch((error) => {
                     // Manejar errores aquí
-                    console.error("Error al consumir GraphQL:", error);
+                    //console.error("Error al consumir GraphQL:", error);
                 });
         }
 
