@@ -139,6 +139,7 @@
                         nameInput.type = "text";
                         nameInput.value = prompt.name;
                         nameInput.className = "input";
+                        nameInput.readOnly = true;
                         nameCell.appendChild(nameInput);
                         row.appendChild(nameCell);
 
@@ -146,6 +147,7 @@
                         const inputInput = document.createElement("textarea");
                         inputInput.value = prompt.input;
                         inputInput.className = "input";
+                        inputInput.readOnly = true;
                         input_Cell.appendChild(inputInput);
                         row.appendChild(input_Cell);
 
@@ -154,6 +156,7 @@
                         tagsInput.type = "text";
                         tagsInput.value = prompt.tags;
                         tagsInput.className = "input";
+                        tagsInput.readOnly = true;
                         tagsCell.appendChild(tagsInput);
                         row.appendChild(tagsCell);
 
@@ -162,6 +165,7 @@
                         typeInput.type = "text";
                         typeInput.value = prompt.type;
                         typeInput.className = "input";
+                        typeInput.readOnly = true;
                         typeCell.appendChild(typeInput);
                         row.appendChild(typeCell);
 
