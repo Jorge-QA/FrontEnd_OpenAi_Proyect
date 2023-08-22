@@ -63,7 +63,7 @@
             }
         }
 
-        //               Consulta GraphQL que deseas ejecutar
+        //               Consulta GraphQL a ejecutar
         // const query = `
         // {
         //     prompts{
@@ -111,9 +111,11 @@
         function getPrompts(query, by) {
             fetch(graphqlUrl, {
                 method: "POST",
+                //establecemos el token en el header para poder hacer la consulta
                 headers: {
                     "Content-Type": "application/json",
-                    Accept: "application/json",
+                    Accept: "application/json", "auth-token":
+                    sessionStorage.getItem("token"),
                 },
                 body: JSON.stringify({ query }),
             })
